@@ -1,0 +1,6 @@
+@SofiaJournal2025_HostAddress = http://localhost:5127
+
+GET {{SofiaJournal2025_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
