@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="AppHost1/AppHost1.csproj" />
+  <Project Path="SofiaJournal2025.Backend/SofiaJournal2025.Backend.csproj" />
+</Solution>
