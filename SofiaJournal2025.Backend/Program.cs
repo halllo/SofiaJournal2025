@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,28 +19,28 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+int nextId = 1;
+List<JournalEntry> journalEntries = [];
 
-app.MapGet("/weatherforecast", () =>
+app.MapGet("/journalentries", () =>
 {
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+    return journalEntries;
+});
+
+app.MapGet("/journalentries/{id}", (int id) =>
+{
+    var journalEntry = journalEntries.FirstOrDefault(j => j.Id == id);
+    return journalEntry == null ? Results.NotFound() : Results.Ok(journalEntry);
+});
+
+app.MapPost("/journalentries", (NewJournalEntry newEntry) =>
+{
+    var newJournalEntry = new JournalEntry(nextId++, newEntry.Content);
+    journalEntries.Add(newJournalEntry);
+    return Results.Accepted($"/journalentries/{newJournalEntry.Id}", newJournalEntry);
+});
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+record NewJournalEntry(string Content);
+record JournalEntry(int Id, string Content);

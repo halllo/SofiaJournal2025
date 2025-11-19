@@ -1,0 +1,6 @@
+{
+  "/journalentries": {
+  "target": "http://localhost:5127",
+  "secure": false
+  }
+}
