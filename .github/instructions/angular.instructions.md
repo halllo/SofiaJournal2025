@@ -1,6 +1,6 @@
 ---
 description: 'Angular-specific coding standards and best practices'
-applyTo: '**'
+applyTo: 'sofia-journal-2025-ui/**'
 ---
 
 # Persona
